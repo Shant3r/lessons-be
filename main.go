@@ -1,9 +1,7 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 func main() {
-	fmt.Println("Yoba")
+	fmt.Println("32132 × 42452 =", 32132*42452)
 }
