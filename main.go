@@ -1,7 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
-	fmt.Println("32132 × 42452 =", 32132*42452)
+    for i := 1; i <= 10; i++ {
+       if i % 2 == 0 {
+            fmt.Println(i, "even")
+        } else {
+            fmt.Println(i, "odd")
+        }
+    }
 }
