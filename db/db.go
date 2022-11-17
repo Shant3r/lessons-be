@@ -21,7 +21,7 @@ func (r *Repository) AddProduct(p *Product) error {
 	}
 	id := int64(1)
 	if len(r.products) > 0 {
-		lastProduct := r.products[len(r.products)]
+		lastProduct := r.products[len(r.products)-1]
 		id = lastProduct.ID + 1
 	}
 
