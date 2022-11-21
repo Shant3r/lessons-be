@@ -32,17 +32,13 @@ func main() {
 			if err != nil {
 				c.JSON(http.StatusBadRequest, "bad request")
 				return
-				//Конвертировать idString  из строки в int64 (записать в переменную id)
-				//Если параметр не число то нужно вернуть статус badrequest (400)
 			}
 			product, ok := h.GetProduct(id)
 			if ok {
 				c.JSON(http.StatusOK, product)
-				//Вернуть как результат продукт со статусом ок (200)
 			} else {
 				c.JSON(http.StatusNotFound, "not found")
 			}
-			//Иначе вернуть notfound(404)
 			return
 		}
 	})
