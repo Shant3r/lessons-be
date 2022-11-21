@@ -28,7 +28,7 @@ func main() {
 	r.GET("/products", func(c *gin.Context) {
 		idString := c.Request.URL.Query().Get("id")
 		if idString != "" {
-			id, err := strconv.Atoi(idString)
+			id, err := strconv.ParseInt(idString, 10, 64)
 			if err != nil {
 				c.JSON(http.StatusBadRequest, "bad request")
 				return
@@ -37,7 +37,7 @@ func main() {
 			}
 			product, ok := h.GetProduct(id)
 			if ok {
-				c.JSON(http.StatusOK, h.GetProduct(product))
+				c.JSON(http.StatusOK, product)
 				//Вернуть как результат продукт со статусом ок (200)
 			} else {
 				c.JSON(http.StatusNotFound, "not found")

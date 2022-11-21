@@ -34,6 +34,20 @@ func (r *Repository) GetProducts() []*Product {
 	return r.products
 }
 
-func (r *Repository) GetProduct() {
+func (r *Repository) GetProduct(id int64) (*Product, bool) {
+	for _, product := range r.products {
+		if id == product.ID {
+			return product, true
+		}
+	}
+	return nil, false
+}
 
+func (r *Repository) DoesProductExist(id int64) bool {
+	for _, product := range r.products {
+		if id == product.ID {
+			return true
+		}
+	}
+	return false
 }
