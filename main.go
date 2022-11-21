@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -27,17 +28,25 @@ func main() {
 	r.GET("/products", func(c *gin.Context) {
 		idString := c.Request.URL.Query().Get("id")
 		if idString != "" {
-			//Конвертировать idString  из строки в int64 (записать в переменную id)
-			//Если параметр не число то нужно вернуть статус badrequest (400)
+			id, err := strconv.Atoi(idString)
+			if err != nil {
+				c.JSON(http.StatusBadRequest, "bad request")
+				return
+				//Конвертировать idString  из строки в int64 (записать в переменную id)
+				//Если параметр не число то нужно вернуть статус badrequest (400)
+			}
 			product, ok := h.GetProduct(id)
 			if ok {
+				c.JSON(http.StatusOK, h.GetProduct(product))
 				//Вернуть как результат продукт со статусом ок (200)
+			} else {
+				c.JSON(http.StatusNotFound, "not found")
 			}
 			//Иначе вернуть notfound(404)
 			return
 		}
-		c.JSON(http.StatusOK, h.GetProducts())
 	})
+
 	r.POST("/products", func(c *gin.Context) {
 		jsonData, err := ioutil.ReadAll(c.Request.Body)
 		if err != nil {

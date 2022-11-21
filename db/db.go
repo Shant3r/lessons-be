@@ -33,3 +33,7 @@ func (r *Repository) AddProduct(p *Product) error {
 func (r *Repository) GetProducts() []*Product {
 	return r.products
 }
+
+func (r *Repository) GetProduct() {
+
+}
