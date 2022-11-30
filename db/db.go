@@ -10,8 +10,8 @@ func New() *Repository {
 	return &Repository{
 		products: []*Product{},
 	}
-}
 
+}
 func (r *Repository) AddProduct(p *Product) error {
 	if p == nil {
 		return errors.New("product is nil")
@@ -24,10 +24,29 @@ func (r *Repository) AddProduct(p *Product) error {
 		lastProduct := r.products[len(r.products)-1]
 		id = lastProduct.ID + 1
 	}
-
 	p.ID = id
 	r.products = append(r.products, p)
 	return nil
+}
+
+func (r *Repository) UpdateProduct(p *Product) error {
+	if p == nil {
+		return errors.New("product is nil")
+	}
+	if p.Title == "" {
+		return errors.New("title is empty")
+	}
+	if p.ID <= 0 {
+		return errors.New("id <= 0")
+	}
+	product, ok := r.GetProduct(p.ID)
+	if ok {
+		product.Title = p.Title
+	} else {
+		return errors.New("not found")
+	}
+	return nil
+
 }
 
 func (r *Repository) GetProducts() []*Product {
@@ -39,6 +58,7 @@ func (r *Repository) GetProduct(id int64) (*Product, bool) {
 		if id == product.ID {
 			return product, true
 		}
+
 	}
 	return nil, false
 }
@@ -48,6 +68,7 @@ func (r *Repository) DoesProductExist(id int64) bool {
 		if id == product.ID {
 			return true
 		}
+
 	}
 	return false
 }
