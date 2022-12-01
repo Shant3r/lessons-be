@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/shant3r/lessons-be/db"
 	"github.com/gin-gonic/gin"
+	"github.com/shant3r/lessons-be/db"
 )
 
 type Handler struct {
@@ -72,11 +72,17 @@ func (h *Handler) UpdateProduct(c *gin.Context) {
 		internalError(c, err)
 		return
 	}
-	err = h.r.UpdateProduct(convertToDBProduct(product))
+
+	ok, err := h.r.UpdateProduct(convertToDBProduct(product))
 	if err != nil {
 		internalError(c, err)
 		return
 	}
+	if !ok {
+		notFound(c)
+		return
+	}
+
 }
 
 func (h *Handler) getProduct(id int64) (*Product, bool) {
