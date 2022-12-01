@@ -19,6 +19,9 @@ func (r *Repository) AddProduct(p *Product) error {
 	if p.Title == "" {
 		return errors.New("title is empty")
 	}
+	if p.Price <= 0 {
+		return errors.New("price <= 0")
+	}
 	id := int64(1)
 	if len(r.products) > 0 {
 		lastProduct := r.products[len(r.products)-1]
@@ -33,15 +36,17 @@ func (r *Repository) UpdateProduct(p *Product) (bool, error) {
 	if p == nil {
 		return false, errors.New("product is nil")
 	}
-	if p.Title == "" {
-		return false, errors.New("title is empty")
-	}
 	if p.ID <= 0 {
 		return false, errors.New("id <= 0")
 	}
 	product, ok := r.GetProduct(p.ID)
 	if ok {
-		product.Title = p.Title
+		if p.Title != "" {
+			product.Title = p.Title
+		}
+		if p.Price > 0 {
+			product.Price = p.Price
+		}
 	}
 	return ok, nil
 }

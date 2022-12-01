@@ -3,10 +3,10 @@ package main
 import (
 	"time"
 
-	"github.com/shant3r/lessons-be/db"
-	"github.com/shant3r/lessons-be/handler"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/shant3r/lessons-be/db"
+	"github.com/shant3r/lessons-be/handler"
 )
 
 func main() {
