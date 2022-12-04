@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/shant3r/lessons-be/db"
 	"github.com/shant3r/lessons-be/handler"
+	"github.com/shant3r/lessons-be/handlerUsers"
 )
 
 func main() {
@@ -20,12 +21,13 @@ func main() {
 	}))
 
 	h := handler.New(db.New())
+	u := handlerUsers.New(db.New())
 
 	r.GET("/products", h.GetProducts)
 	r.POST("/products", h.AddProduct)
 	r.PUT("/products", h.UpdateProduct)
-	r.GET("/users", h.GetUsers)
-	r.POST("/users", h.AddUser)
+	r.GET("/users", u.GetUsers)
+	r.POST("/users", u.AddUser)
 
 	r.Run()
 }
