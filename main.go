@@ -24,6 +24,8 @@ func main() {
 	r.GET("/products", h.GetProducts)
 	r.POST("/products", h.AddProduct)
 	r.PUT("/products", h.UpdateProduct)
+	r.GET("/users", h.GetUsers)
+	r.POST("/users", h.AddUser)
 
 	r.Run()
 }
