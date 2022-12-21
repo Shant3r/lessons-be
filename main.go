@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"time"
@@ -22,6 +23,7 @@ const (
 )
 
 func main() {
+	ctx := context.Background()
 	r := gin.Default()
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"*"},
@@ -33,7 +35,7 @@ func main() {
 
 	connectionString := fmt.Sprintf("host=%s port=%d user=%s "+"password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
-	database, err := sql.Open("postgres", psqlInfo)
+	database, err := sql.Open("postgres", connectionString)
 	if err != nil {
 		panic(err)
 	}
@@ -44,8 +46,8 @@ func main() {
 	h := handler.New(repository)
 	u := handlerUsers.New(repository)
 
-	r.GET("/products", h.GetProducts)
-	r.POST("/products", h.AddProduct)
+	r.GET("/products", func(c *gin.Context) { h.GetProducts(ctx, c) })
+	r.POST("/products", func(c *gin.Context) { h.AddProduct(ctx, c) })
 	r.PUT("/products", h.UpdateProduct)
 	r.GET("/users", u.GetUsers)
 	r.POST("/users", u.AddUser)

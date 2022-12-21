@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -19,7 +20,7 @@ func New(repository *db.Repository) *Handler {
 	return &Handler{r: repository}
 }
 
-func (h *Handler) AddProduct(c *gin.Context) {
+func (h *Handler) AddProduct(ctx context.Context, c *gin.Context) {
 	jsonData, err := ioutil.ReadAll(c.Request.Body)
 	if err != nil {
 		internalError(c, err)
@@ -39,14 +40,14 @@ func (h *Handler) AddProduct(c *gin.Context) {
 		badRequst(c)
 		return
 	}
-	err = h.r.AddProduct(convertToDBProduct(product))
+	err = h.r.AddProduct(ctx, convertToDBProduct(product))
 	if err != nil {
 		internalError(c, err)
 		return
 	}
 }
 
-func (h *Handler) GetProducts(c *gin.Context) {
+func (h *Handler) GetProducts(ctx context.Context, c *gin.Context) {
 	idString := c.Request.URL.Query().Get("id")
 	if idString != "" {
 		id, err := strconv.ParseInt(idString, 10, 64)
@@ -62,7 +63,10 @@ func (h *Handler) GetProducts(c *gin.Context) {
 		}
 		return
 	}
-	products := h.r.GetProducts()
+	products, err := h.r.GetProducts(ctx)
+	if err != nil {
+		return
+	}
 
 	c.JSON(http.StatusOK, convertToProducts(products))
 
