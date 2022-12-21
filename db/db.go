@@ -1,18 +1,23 @@
 package db
 
 import (
+	"database/sql"
 	"errors"
 )
 
 type Repository struct {
 	products []*Product
 	users    []*User
+
+	database *sql.DB
 }
 
-func New() *Repository {
+func New(database *sql.DB) *Repository {
 	return &Repository{
 		products: []*Product{},
 		users:    []*User{},
+
+		database: database,
 	}
 
 }
